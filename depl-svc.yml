@@ -1,32 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cicd-demo
+  name: ci-cd00-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: cicd-demo
+      app: ci-cd00
   template:
     metadata:
       labels:
-        app: cicd-demo
+        app: ci-cd00
     spec:
       containers:
-      - name: cicd-demo
-        image: cicd-demo:latest
+      - name: ci-cd00
+        image: mostafa137/ci-cd00:latest
         ports:
         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cicd-demo-service
+  name: ci-cd00-svc
 spec:
   selector:
-    app: cicd-demo
+    app: ci-cd00
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8080
   type: NodePort
+
