@@ -1,7 +1,7 @@
 pipeline {
      agent {
         docker {
-             image 'lachlanevenson/k8s-kubectl:v1.24.5'
+             image 'dtzar/helm-kubectl:latest'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
@@ -80,6 +80,7 @@ pipeline {
 
 
 }
+
 
 
 
