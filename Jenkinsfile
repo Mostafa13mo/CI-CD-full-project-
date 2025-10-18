@@ -1,8 +1,8 @@
 pipeline {
   agent any 
   stages {
-      stage {
-          steps('clone repo'){
+      stage('cloning repo') {
+          steps {
                  git 'https://github.com/Mostafa13mo/CI-CD-Prometheus-Grafana.git'
           }
 
