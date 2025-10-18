@@ -3,7 +3,7 @@ pipeline {
   stages {
       stage('cloning repo') {
           steps {
-                 git 'https://github.com/Mostafa13mo/CI-CD-Prometheus-Grafana.git'
+                 git 'https://github.com/Mostafa13mo/CI-CD-full-project-.git'
           }
 
       }
