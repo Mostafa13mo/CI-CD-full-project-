@@ -23,18 +23,8 @@ pipeline {
       }
       stage('docker build') {
             steps {
-                sh 'docker build -t docker.io/mostafa137/web-image2 .'
+                sh 'docker build -t docker.io/mostafa137/ci-cd00 .'
             }
-      }
-      stage('docker push') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'mycrid', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh """
-                        docker login -u \$USERNAME -p \$PASSWORD
-                        docker push docker.io/mostafa137/web-image00
-                    """
-                }
-            }    
       }
       stage('docker push') {
             steps {
@@ -53,7 +43,7 @@ pipeline {
                      sh """
                          ssh -o StrictHostKeyChecking=no amrm@192.168.49.2 '
                           echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
-                          docker run  --name deploy -d -p 80:80 docker.io/mostafa137/web-image2 
+                          docker run  --name deploy -d -p 80:80 docker.io/mostafa137/ci-cd00
                         '
                       """  
 
