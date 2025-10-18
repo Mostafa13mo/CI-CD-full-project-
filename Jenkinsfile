@@ -36,27 +36,42 @@ pipeline {
                 }
             }    
       }
-      stage('deploy') {
+        stage('Deploy to Kubernetes (Minikube)') {
             steps {
-               withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-               sshagent(credentials: ['amrm-ssh-cred']) {
-                     sh """
-                         ssh -o StrictHostKeyChecking=no amrm@192.168.49.2 '
-                          echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
-                          docker run  --name deploy -d -p 80:80 docker.io/mostafa137/ci-cd00
-                        '
-                      """  
+                withCredentials([file(credentialsId: 'deploysecret', variable: 'KUBECONFIG_FILE')]) {
+                    sh '''
+                    echo "==== Deploying to Minikube Cluster ===="
+                    export KUBECONFIG=$KUBECONFIG_FILE
 
-                  }
+                    
+                    kubectl apply -f depl-svc.yml
+
+                  
+                    kubectl rollout status deployment/ci-cd00-deployment || true
+
+                    echo "==== Deployment Completed ===="
+                    '''
                 }
             }
-      }   
+        }
 
+        stage('Get Service URL') {
+            steps {
+                withCredentials([file(credentialsId: 'deploysecret', variable: 'KUBECONFIG_FILE')]) {
+                    sh '''
+                    export KUBECONFIG=$KUBECONFIG_FILE
+                    echo "==== App Service URL ===="
+                    minikube service ci-cd00-svc --url
+                    '''
+                }
+            }
+        }
 
 
  
 
   }
+
 
 
 }
